@@ -3,144 +3,196 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>사워도우 & 이스트 물 온도 계산기</title>
+    <title>아몬드 베이커리 - 물 온도 계산기</title>
     <style>
+        /* [색상 테마 설정] */
+        :root {
+            --primary-brown: #8d6e63;    /* 따뜻한 우드톤 */
+            --dark-brown: #5d4037;       /* 진한 포인트 브라운 */
+            --light-beige: #efebe9;      /* 연한 베이지 */
+            --bg-cream: #faf8f6;         /* 전체 배경 크림색 */
+            --white: #ffffff;
+        }
+
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            background-color: #f8f9fa;
+            background-color: var(--bg-cream);
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
             margin: 0;
-            color: #333;
+            color: #4e342e; /* 텍스트도 진한 갈색톤으로 변경 */
         }
+
         .container {
-            background: white;
-            padding: 2rem;
-            border-radius: 12px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            background: var(--white);
+            padding: 2.5rem 2rem;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(141, 110, 99, 0.1);
             width: 100%;
-            max-width: 400px;
+            max-width: 380px;
             margin: 20px;
         }
-        h1 {
-            font-size: 1.4rem;
+
+        /* 로고 영역 */
+        .logo-wrapper {
             text-align: center;
-            margin-bottom: 1.5rem;
-            color: #2c3e50;
+            margin-bottom: 1.2rem;
         }
+        .profile-logo {
+            width: 85px;
+            height: 85px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid var(--light-beige);
+            background-color: var(--light-beige);
+            https://raw.githubusercontent.com/DavidJeon1229/Sourdough-Temp-Calc/refs/heads/main/%E1%84%8B%E1%85%A1%E1%84%86%E1%85%A9%E1%86%AB%E1%84%83%E1%85%B3%20%E1%84%87%E1%85%A6%E1%84%8B%E1%85%B5%E1%84%8F%E1%85%A5%E1%84%85%E1%85%B5%20%E1%84%85%E1%85%A9%E1%84%80%E1%85%A9.png
+            /* 여기에 이미지 주소를 넣으세요 */
+        }
+
+        h1 {
+            font-size: 1.3rem;
+            text-align: center;
+            margin-bottom: 1.8rem;
+            color: var(--dark-brown);
+            letter-spacing: -0.5px;
+        }
+
+        /* 모드 선택 탭 */
         .tabs {
             display: flex;
-            background: #eee;
-            padding: 4px;
-            border-radius: 8px;
+            background: var(--light-beige);
+            padding: 5px;
+            border-radius: 12px;
             margin-bottom: 1.5rem;
         }
         .tab {
             flex: 1;
-            padding: 8px;
+            padding: 10px;
             text-align: center;
             cursor: pointer;
-            border-radius: 6px;
+            border-radius: 8px;
             font-size: 0.9rem;
-            font-weight: 500;
-            transition: 0.2s;
+            font-weight: 600;
+            transition: 0.3s;
+            color: #888;
         }
         .tab.active {
-            background: white;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-            color: #007bff;
+            background: var(--white);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            color: var(--primary-brown);
         }
+
+        /* 입력창 스타일 */
         .input-group {
-            margin-bottom: 1rem;
+            margin-bottom: 1.2rem;
         }
         label {
             display: block;
             font-size: 0.85rem;
-            margin-bottom: 0.4rem;
-            font-weight: 500;
-            color: #666;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--dark-brown);
         }
         input {
             width: 100%;
-            padding: 0.6rem;
-            border: 1px solid #ddd;
-            border-radius: 6px;
+            padding: 0.7rem;
+            border: 1.5px solid var(--light-beige);
+            border-radius: 10px;
             box-sizing: border-box;
             font-size: 1rem;
+            background-color: #fff;
+            transition: border-color 0.2s;
+            color: var(--dark-brown);
         }
+        input:focus {
+            outline: none;
+            border-color: var(--primary-brown);
+        }
+
+        /* 마찰계수 버튼 */
         .btn-group {
             display: flex;
-            gap: 0.5rem;
-            margin-top: 0.5rem;
+            gap: 0.6rem;
+            margin-top: 0.6rem;
         }
         .btn-group button {
             flex: 1;
-            padding: 0.5rem;
-            border: 1px solid #007bff;
-            background: white;
-            color: #007bff;
-            border-radius: 6px;
+            padding: 0.6rem;
+            border: 1.5px solid var(--primary-brown);
+            background: var(--white);
+            color: var(--primary-brown);
+            border-radius: 10px;
             cursor: pointer;
             font-size: 0.85rem;
+            font-weight: 500;
+            transition: 0.2s;
         }
         .btn-group button.active {
-            background: #007bff;
-            color: white;
+            background: var(--primary-brown);
+            color: var(--white);
         }
+
+        /* 결과창 스타일 */
         .result-box {
-            margin-top: 1.5rem;
-            padding: 1.2rem;
-            background: #e7f3ff;
-            border-radius: 8px;
+            margin-top: 2rem;
+            padding: 1.5rem;
+            background: var(--light-beige);
+            border-radius: 15px;
             text-align: center;
         }
         .result-label {
             font-size: 0.85rem;
-            color: #555;
-            margin-bottom: 0.3rem;
+            color: var(--dark-brown);
+            margin-bottom: 0.5rem;
+            font-weight: 500;
         }
         .result-value {
-            font-size: 1.8rem;
-            font-weight: bold;
-            color: #007bff;
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--primary-brown);
         }
+
         .hidden { display: none; }
         
-        /* 푸터 및 SNS 아이콘 스타일 */
+        /* 푸터 스타일 */
         footer {
-            margin-top: 2rem;
-            font-size: 0.75rem;
-            color: #999;
+            margin-top: 2.5rem;
+            font-size: 0.8rem;
+            color: #bcaaa4;
             text-align: center;
-            border-top: 1px solid #eee;
+            border-top: 1px solid var(--light-beige);
             padding-top: 1.5rem;
         }
         .brand-name {
-            margin-bottom: 10px;
+            margin-bottom: 12px;
             display: block;
-            font-weight: 500;
+            font-weight: 600;
+            color: var(--primary-brown);
         }
         .social-links {
             display: flex;
             justify-content: center;
-            gap: 15px;
-            margin-top: 10px;
+            gap: 18px;
         }
         .social-icon {
-            width: 24px;
-            height: 24px;
-            fill: #aaa;
+            width: 26px;
+            height: 26px;
+            fill: #d7ccc8; /* 기본 아이콘 색상 */
             transition: all 0.3s ease;
         }
-        .social-link:hover .icon-yt { fill: #FF0000; }
-        .social-link:hover .icon-ig { fill: #E4405F; }
+        .social-link:hover .icon-yt { fill: #FF0000; } /* 유튜브 레드 */
+        .social-link:hover .icon-ig { fill: #E4405F; } /* 인스타 핑크 */
     </style>
 </head>
 <body>
 
 <div class="container">
+    <div class="logo-wrapper">
+        <img src="프로필_이미지_주소" alt="Almond Bakery" class="profile-logo" onerror="this.style.display='none'">
+    </div>
+
     <h1>물 온도 계산기</h1>
 
     <div class="tabs">
