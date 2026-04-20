@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>사워도우 물 온도 계산기</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background-color: #f8f9fa;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            color: #333;
+        }
+        .container {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            width: 100%;
+            max-width: 400px;
+        }
+        h1 {
+            font-size: 1.5rem;
+            text-align: center;
+            margin-bottom: 1.5rem;
+            color: #2c3e50;
+        }
+        .input-group {
+            margin-bottom: 1rem;
+        }
+        label {
+            display: block;
+            font-size: 0.9rem;
+            margin-bottom: 0.4rem;
+            font-weight: 500;
+        }
+        input {
+            width: 100%;
+            padding: 0.6rem;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            box-sizing: border-box;
+            font-size: 1rem;
+        }
+        .btn-group {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+        button {
+            flex: 1;
+            padding: 0.5rem;
+            border: 1px solid #007bff;
+            background: white;
+            color: #007bff;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            transition: all 0.2s;
+        }
+        button.active {
+            background: #007bff;
+            color: white;
+        }
+        .result-box {
+            margin-top: 1.5rem;
+            padding: 1rem;
+            background: #e7f3ff;
+            border-radius: 8px;
+            text-align: center;
+        }
+        .result-label {
+            font-size: 0.9rem;
+            color: #555;
+            margin-bottom: 0.3rem;
+        }
+        .result-value {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #007bff;
+        }
+        footer {
+            margin-top: 1.5rem;
+            font-size: 0.75rem;
+            color: #999;
+            text-align: center;
+            line-height: 1.4;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>물 온도 계산기</h1>
+    
+    <div class="input-group">
+        <label>희망 반죽 온도 (°C)</label>
+        <input type="number" id="targetTemp" value="24" step="0.1" oninput="calculate()">
+    </div>
+    
+    <div class="input-group">
+        <label>실내 온도 (°C)</label>
+        <input type="number" id="roomTemp" value="23" step="0.1" oninput="calculate()">
+    </div>
+    
+    <div class="input-group">
+        <label>밀가루 온도 (°C)</label>
+        <input type="number" id="flourTemp" value="23" step="0.1" oninput="calculate()">
+    </div>
+
+    <div class="input-group">
+        <label>르방 온도 (°C)</label>
+        <input type="number" id="levainTemp" value="23" step="0.1" oninput="calculate()">
+    </div>
+    
+    <div class="input-group">
+        <label>마찰계수 (손반죽: 3, 반죽기: 8)</label>
+        <input type="number" id="friction" value="3" step="0.1" oninput="calculate()">
+        <div class="btn-group">
+            <button id="btnHand" class="active" onclick="setFriction(3, 'btnHand')">손반죽 (3)</button>
+            <button id="btnMachine" onclick="setFriction(8, 'btnMachine')">반죽기 (8)</button>
+        </div>
+    </div>
+
+    <div class="result-box">
+        <div class="result-label">필요한 물 온도</div>
+        <div class="result-value" id="result">0.0 °C</div>
+    </div>
+
+    <footer>
+        * 희망 온도를 입력하고 나머지 요소를 측정해 입력하세요.<br>
+        by Almond Bakery
+    </footer>
+</div>
+
+<script>
+    function setFriction(value, btnId) {
+        document.getElementById('friction').value = value;
+        document.querySelectorAll('.btn-group button').forEach(btn => btn.classList.remove('active'));
+        document.getElementById(btnId).classList.add('active');
+        calculate();
+    }
+
+    function calculate() {
+        const target = parseFloat(document.getElementById('targetTemp').value) || 0;
+        const room = parseFloat(document.getElementById('roomTemp').value) || 0;
+        const flour = parseFloat(document.getElementById('flourTemp').value) || 0;
+        const levain = parseFloat(document.getElementById('levainTemp').value) || 0;
+        const friction = parseFloat(document.getElementById('friction').value) || 0;
+
+        // 공식: (희망온도 * 4) - (실내 + 밀가루 + 르방 + 마찰계수)
+        const waterTemp = (target * 4) - (room + flour + levain + friction);
+        
+        document.getElementById('result').innerText = waterTemp.toFixed(1) + " °C";
+    }
+
+    // 초기 계산 실행
+    window.onload = calculate;
+</script>
+
+</body>
+</html>
